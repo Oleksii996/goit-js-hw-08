@@ -63,3 +63,36 @@ const images = [
     description: 'Lighthouse Coast Sea',
   },
 ];
+
+//3 - Розмітка елементів галереї
+// У тебе є контейнер, в який можна додати елементи галереї, і дані, за якими їх можна створити. Саме час наповнювати галерею розміткою.
+// Використовуй масив об’єктів images і цей HTML шаблон елемента галереї та створи в JavaScript коді розмітку елементів, після чого додай усю розмітку всередину ul.gallery. Не додавай інші HTML теги, крім тих, що містяться в цьому шаблоні.
+
+// 1. Беремо ul.gallery — контейнер, куди буде додано розмітку
+const gallery = document.querySelector('.gallery');
+
+// 2. Створюємо розмітку на основі масиву "images"
+const markup = images
+  .map(({ preview, original, description }) => {
+    return `
+      <li class="gallery-item">
+        <a class="gallery-link" href="${original}">
+          <img
+            class="gallery-image"
+            src="${preview}"
+            data-source="${original}"
+            alt="${description}"
+          />
+        </a>
+      </li>
+    `;
+  })
+  .join(''); // об’єднуємо всі елементи в один рядок
+
+// 3. Додаємо всі елементи галереї ОДНИМ додаванням
+gallery.innerHTML = markup;
+
+// 4. Забороняємо відкриття зображення як файлу (вимога завдання)
+gallery.addEventListener('click', event => {
+  event.preventDefault(); // блокуємо стандартну поведінку <a>
+});
