@@ -1,3 +1,4 @@
+// Завдання 1 - Галерея
 const images = [
   {
     preview:
@@ -64,35 +65,61 @@ const images = [
   },
 ];
 
-//3 - Розмітка елементів галереї
-// У тебе є контейнер, в який можна додати елементи галереї, і дані, за якими їх можна створити. Саме час наповнювати галерею розміткою.
-// Використовуй масив об’єктів images і цей HTML шаблон елемента галереї та створи в JavaScript коді розмітку елементів, після чого додай усю розмітку всередину ul.gallery. Не додавай інші HTML теги, крім тих, що містяться в цьому шаблоні.
-
-// 1. Беремо ul.gallery — контейнер, куди буде додано розмітку
+// Частина 3
+// Знаходимо галерею.. легко
 const gallery = document.querySelector('.gallery');
 
-// 2. Створюємо розмітку на основі масиву "images"
-const markup = images
-  .map(({ preview, original, description }) => {
-    return `
-      <li class="gallery-item">
-        <a class="gallery-link" href="${original}">
-          <img
-            class="gallery-image"
-            src="${preview}"
-            data-source="${original}"
-            alt="${description}"
-          />
-        </a>
-      </li>
-    `;
-  })
-  .join(''); // об’єднуємо всі елементи в один рядок
+//збираю фото докупи
+//В атрибуті src тега <img> вказуємо посилання на маленьку версію зображення.preview
+//Для атрибута alt використовуємо опис зображення.description
+//Посилання на велике зображення повинно зберігатися в data-атрибуті source на елементі <img>, і вказуватися в href посилання.
+const structure = images
+  .map(
+    ({ preview, original, description }) => `
+    <li class="gallery-item">
+      <a class="gallery-link" href="${original}">
+        <img
+          class="gallery-image"
+          src="${preview}" 
+          data-source="${original}"
+          alt="${description}"
+        />
+      </a>
+    </li>
+  `
+  )
+  .join('');
+//стоврили код у js для index.html
 
-// 3. Додаємо всі елементи галереї ОДНИМ додаванням
-gallery.innerHTML = markup;
+gallery.innerHTML = structure; //присвоюю розмітку, що створив, через метод innerHTML
+console.log(structure);
 
-// 4. Забороняємо відкриття зображення як файлу (вимога завдання)
-gallery.addEventListener('click', event => {
-  event.preventDefault(); // блокуємо стандартну поведінку <a>
+// Частина 4
+//стилі у файлі стилів
+
+// Частина 5
+// одна функція - обробник подій
+gallery.addEventListener('click', function (event) {
+  event.preventDefault(); // вбудований метод. заборонив перехід по посиланню, фотки не картинки прості, а саме лінки. addEventListener - також зарезервоване значення
+
+  const clickedImage = event.target.closest('.gallery-image');
+  if (!clickedImage) return;
+  // перевіряю, чи клік  по зображенню, якщо не по фото — нічого не буде. (Делегування)
+
+  // Частина 8 - Велике зображення
+  const bigImage = clickedImage.dataset.source;
+  //присвоюю змінну на зобрження
+
+  // Завдання 5: Поки що при кліку на елемент галереї виводь у консоль посилання на велике зображення, що зберігається як значення атрибуту data-source елемента img.
+  console.log(bigImage);
+
+  // Завдання 7–8: посилання на велике зображення із атрибуту data-source - bigImage
+  //через змінну лише!!!
+  const modalFenster = basicLightbox
+    .create(
+      `
+    <img src="${bigImage}" width="1112" height="640">
+  `
+    ) //задаємо стилі, якого розміру може воно відкриватись
+    .show();
 });

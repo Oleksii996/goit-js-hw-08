@@ -30,11 +30,6 @@ body {
 
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
 }
-/* Ефект при наведенні */
-.gallery-item:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-}
 
 .gallery-link {
   display: block;
